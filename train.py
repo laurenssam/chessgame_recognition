@@ -35,7 +35,7 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     """
     exp_name.mkdir(exist_ok=True, parents=True)
     global start_epoch, label_map, epoch, decay_lr_at
-    data_folder = create_data_lists(run_colab)
+    # data_folder = create_data_lists(run_colab)
 
     # Initialize model or load checkpoint
     if not continue_training:
