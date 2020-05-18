@@ -68,7 +68,10 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     # train_dataset = PascalVOCDataset(data_folder,
     #                                  split='train',
     #                                  keep_difficult=keep_difficult)
-    root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
+    if run_colab:
+        "gdrive/My Drive/Chess notation/annotated"
+    else:
+        root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
     train_dataset = ChessDataset(root_path)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True,
                                                collate_fn=train_dataset.collate_fn, num_workers=workers,
