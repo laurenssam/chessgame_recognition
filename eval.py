@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from utils import *
+from utils_chess import *
 from datasets import PascalVOCDataset, ChessDataset
 from tqdm import tqdm
 from pprint import PrettyPrinter
