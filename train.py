@@ -69,7 +69,7 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     #                                  split='train',
     #                                  keep_difficult=keep_difficult)
     if run_colab:
-        root_path = "gdrive/My Drive/Chess notation/annotated"
+        root_path = Path("/content/gdrive/My Drive/Chess notation/annotated")
     else:
         root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
     train_dataset = ChessDataset(root_path)
