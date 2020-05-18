@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 from utils import *
-from datasets import PascalVOCDataset
+from datasets import PascalVOCDataset, ChessDataset
 from tqdm import tqdm
 from pprint import PrettyPrinter
 from argparser import parse_val_arguments
@@ -21,11 +21,11 @@ def evaluate(checkpoint, run_colab, batch_size, set, subset):
     :param test_loader: DataLoader for test data
     :param model: model
     """
-
-    data_folder = create_data_lists(run_colab)
-    test_dataset = PascalVOCDataset(data_folder,
-                                    split=set,
-                                    keep_difficult=keep_difficult)
+    if run_colab:
+        root_path = Path("/content/gdrive/My Drive/Chess notation/annotated")
+    else:
+        root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
+    test_dataset = ChessDataset(root_path)
     if subset > 0:
         test_dataset.images = test_dataset.images[:subset]
         test_dataset.objects = test_dataset.objects[:subset]
