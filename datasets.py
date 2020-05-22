@@ -104,7 +104,7 @@ class PascalVOCDataset(Dataset):
             difficulties = difficulties[1 - difficulties]
 
         # Apply transformations
-        image, boxes, labels, difficulties = transform(image, boxes, labels, difficulties, split=self.split)
+        # image, boxes, labels, difficulties = transform(image, boxes, labels, difficulties, split=self.split)
 
         return image, boxes, labels, difficulties
 

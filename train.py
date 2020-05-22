@@ -7,7 +7,7 @@ from pathlib import Path
 import torch.utils.data
 from model import SSD300, MultiBoxLoss
 from datasets import PascalVOCDataset, ChessDataset
-from utils import *
+from utils_chess import *
 from argparser import parse_train_arguments
 
 # Data parameters
