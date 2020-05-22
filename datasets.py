@@ -139,7 +139,7 @@ class PascalVOCDataset(Dataset):
         return images, boxes, labels, difficulties  # tensor (N, 3, 300, 300), 3 lists of N tensors each
 
 if __name__ == "__main__":
-    root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
+    root_path = "/Users/sierkkanis/Documents/chessrecognition/chessgame_recognition/annotated"
     chess_dataset = ChessDataset(root_path)
     data_folder = create_data_lists(False)
     pascal_dataset = PascalVOCDataset(data_folder,

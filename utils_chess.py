@@ -392,7 +392,10 @@ def expand(image, boxes, filler):
     # Calculate dimensions of proposed expanded (zoomed-out) image
     original_h = image.size(1)
     original_w = image.size(2)
-    max_scale = 4
+
+    max_scale = 4   # MISSCHIEN VERANDEREN #######################
+
+    
     scale = random.uniform(1, max_scale)
     new_h = int(scale * original_h)
     new_w = int(scale * original_w)

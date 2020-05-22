@@ -1,3 +1,4 @@
+
 import sys
 import time
 import torch.backends.cudnn as cudnn
@@ -71,7 +72,8 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     if run_colab:
         root_path = Path("/content/gdrive/My Drive/Chess notation/annotated")
     else:
-        root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
+        # root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
+        root_path = "/Users/sierkkanis/Documents/chessrecognition/chessgame_recognition/annotated"
     train_dataset = ChessDataset(root_path)
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True,
                                                collate_fn=train_dataset.collate_fn, num_workers=workers,
