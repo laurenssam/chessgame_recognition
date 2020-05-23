@@ -388,12 +388,12 @@ class SSD300(nn.Module):
                       'conv10_2': 0.725,
                       'conv11_2': 0.9}
 
-        aspect_ratios = {'conv4_3': [1., 2., 0.5],
-                         'conv7': [1., 2., 3., 0.5, .333],
-                         'conv8_2': [1., 2., 3., 0.5, .333],
-                         'conv9_2': [1., 2., 3., 0.5, .333],
-                         'conv10_2': [1., 2., 0.5],
-                         'conv11_2': [1., 2., 0.5]}
+        aspect_ratios = {'conv4_3': [0.5],
+                         'conv7': [0.5, .333],
+                         'conv8_2': [0.5, .333],
+                         'conv9_2': [0.5, .333],
+                         'conv10_2': [0.5],
+                         'conv11_2': [0.5]}
 
         fmaps = list(fmap_dims.keys())
 
@@ -406,17 +406,18 @@ class SSD300(nn.Module):
                     cy = (i + 0.5) / fmap_dims[fmap]
 
                     for ratio in aspect_ratios[fmap]:
+                        print(obj_scales[fmap] * sqrt(ratio), )
                         prior_boxes.append([cx, cy, obj_scales[fmap] * sqrt(ratio), obj_scales[fmap] / sqrt(ratio)])
 
-                        # For an aspect ratio of 1, use an additional prior whose scale is the geometric mean of the
-                        # scale of the current feature map and the scale of the next feature map
-                        if ratio == 1.:
-                            try:
-                                additional_scale = sqrt(obj_scales[fmap] * obj_scales[fmaps[k + 1]])
-                            # For the last feature map, there is no "next" feature map
-                            except IndexError:
-                                additional_scale = 1.
-                            prior_boxes.append([cx, cy, additional_scale, additional_scale])
+                        # # For an aspect ratio of 1, use an additional prior whose scale is the geometric mean of the
+                        # # scale of the current feature map and the scale of the next feature map
+                        # if ratio == 1.:
+                        #     try:
+                        #         additional_scale = sqrt(obj_scales[fmap] * obj_scales[fmaps[k + 1]])
+                        #     # For the last feature map, there is no "next" feature map
+                        #     except IndexError:
+                        #         additional_scale = 1.
+                        #     prior_boxes.append([cx, cy, additional_scale, additional_scale])
 
         prior_boxes = torch.FloatTensor(prior_boxes).to(device)  # (8732, 4)
         prior_boxes.clamp_(0, 1)  # (8732, 4)

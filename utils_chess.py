@@ -682,7 +682,7 @@ def save_checkpoint(epoch, model, optimizer, exp_name):
     filename = 'checkpoint_ssd300.pth.tar'
     path = exp_name / filename
     torch.save(state, path)
-    print(f'Model saved for epoch {epoch} at path {path}')
+    # print(f'Model saved for epoch {epoch} at path {path}')
 
 
 class AverageMeter(object):
