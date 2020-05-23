@@ -381,9 +381,9 @@ class SSD300(nn.Module):
                      'conv10_2': 3,
                      'conv11_2': 1}
 
-        obj_scales = {'conv4_3': 0.3,
-                      'conv7': 0.5,
-                      'conv8_2': 0.6,
+        obj_scales = {'conv4_3': 0.75,
+                      'conv7': 0.75,
+                      'conv8_2': 0.75,
                       'conv9_2': 0.75,
                       'conv10_2': 0.85,
                       'conv11_2': 0.95}

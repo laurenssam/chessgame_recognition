@@ -100,5 +100,5 @@ if __name__ == '__main__':
     img_path = "/content/gdrive/My Drive/Chess notation/annotated/fc63c25f-87cd-4bdf-b16b-34e6aa37b13e.JPG"
     original_image = Image.open(img_path, mode='r')
     original_image = original_image.convert('RGB')
-    boxed_img = detect(original_image, min_score=0.2, max_overlap=0.2, top_k=200)
+    boxed_img = detect(original_image, min_score=0.2, max_overlap=0.1, top_k=200)
     boxed_img.save("/content/gdrive/My Drive/Chess notation/test_image.png")
