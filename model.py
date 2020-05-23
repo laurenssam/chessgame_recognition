@@ -207,9 +207,9 @@ class PredictionConvolutions(nn.Module):
 
         # Number of prior-boxes we are considering per position in each feature map
         n_boxes = {'conv4_3': 1,
-                   'conv7': 2,
-                   'conv8_2': 2,
-                   'conv9_2': 2,
+                   'conv7': 1,
+                   'conv8_2': 1,
+                   'conv9_2': 1,
                    'conv10_2': 1,
                    'conv11_2': 1}
         # 4 prior-boxes implies we use 4 different aspect ratios, etc.
@@ -388,12 +388,13 @@ class SSD300(nn.Module):
                       'conv10_2': 0.725,
                       'conv11_2': 0.9}
 
-        aspect_ratios = {'conv4_3': [0.5],
-                         'conv7': [0.5, .333],
-                         'conv8_2': [0.5, .333],
-                         'conv9_2': [0.5, .333],
-                         'conv10_2': [0.5],
-                         'conv11_2': [0.5]}
+        aspect_ratios = {'conv4_3': [.15],
+                         'conv7': [.15],
+                         'conv8_2': [.15],
+                         'conv9_2': [.15],
+                         'conv10_2': [.15],
+                         'conv11_2': [.15]}
+        # het lijkt er op alsof een kolom ongeveer 7x zo lang is als breed.
 
         fmaps = list(fmap_dims.keys())
 
@@ -567,7 +568,6 @@ class MultiBoxLoss(nn.Module):
         n_priors = self.priors_cxcy.size(0)
         n_classes = predicted_scores.size(2)
 
-        print(n_priors, predicted_locs.size(1), predicted_scores.size(1))
         assert n_priors == predicted_locs.size(1) == predicted_scores.size(1)
 
 
