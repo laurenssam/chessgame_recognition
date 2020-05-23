@@ -374,19 +374,19 @@ class SSD300(nn.Module):
 
         :return: prior boxes in center-size coordinates, a tensor of dimensions (8732, 4)
         """
-        fmap_dims = {'conv4_3': 45,
-                     'conv7': 25,
-                     'conv8_2': 15,
-                     'conv9_2': 10,
-                     'conv10_2': 9,
+        fmap_dims = {'conv4_3': 38,
+                     'conv7': 19,
+                     'conv8_2': 10,
+                     'conv9_2': 5,
+                     'conv10_2': 3,
                      'conv11_2': 1}
 
-        obj_scales = {'conv4_3': 0.1,
-                      'conv7': 0.2,
-                      'conv8_2': 0.375,
-                      'conv9_2': 0.55,
-                      'conv10_2': 0.725,
-                      'conv11_2': 0.9}
+        obj_scales = {'conv4_3': 0.3,
+                      'conv7': 0.5,
+                      'conv8_2': 0.6,
+                      'conv9_2': 0.75,
+                      'conv10_2': 0.85,
+                      'conv11_2': 0.95}
 
         aspect_ratios = {'conv4_3': [0.333],
                          'conv7': [.333, 0.2],
