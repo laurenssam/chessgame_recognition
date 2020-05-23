@@ -206,12 +206,12 @@ class PredictionConvolutions(nn.Module):
         self.n_classes = n_classes
 
         # Number of prior-boxes we are considering per position in each feature map
-        n_boxes = {'conv4_3': 4,
-                   'conv7': 6,
-                   'conv8_2': 6,
-                   'conv9_2': 6,
-                   'conv10_2': 4,
-                   'conv11_2': 4}
+        n_boxes = {'conv4_3': 1,
+                   'conv7': 2,
+                   'conv8_2': 2,
+                   'conv9_2': 2,
+                   'conv10_2': 2,
+                   'conv11_2': 2}
         # 4 prior-boxes implies we use 4 different aspect ratios, etc.
 
         # Localization prediction convolutions (predict offsets w.r.t prior-boxes)
