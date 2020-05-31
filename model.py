@@ -206,13 +206,20 @@ class PredictionConvolutions(nn.Module):
         self.n_classes = n_classes
 
         # Number of prior-boxes we are considering per position in each feature map
-        n_boxes = {'conv4_3': 1,
-                   'conv7': 1,
-                   'conv8_2': 1,
-                   'conv9_2': 1,
-                   'conv10_2': 1,
-                   'conv11_2': 1}
-        # 4 prior-boxes implies we use 4 different aspect ratios, etc.
+        n_boxes = {'conv4_3': 4,
+                   'conv7': 6,
+                   'conv8_2': 6,
+                   'conv9_2': 6,
+                   'conv10_2': 4,
+                   'conv11_2': 4}
+
+        # # Number of prior-boxes we are considering per position in each feature map
+        # n_boxes = {'conv4_3': 1,
+        #            'conv7': 1,
+        #            'conv8_2': 1,
+        #            'conv9_2': 1,
+        #            'conv10_2': 1,
+        #            'conv11_2': 1}
 
         # Localization prediction convolutions (predict offsets w.r.t prior-boxes)
         self.loc_conv4_3 = nn.Conv2d(512, n_boxes['conv4_3'] * 4, kernel_size=3, padding=1)
@@ -365,7 +372,6 @@ class SSD300(nn.Module):
         # Run prediction convolutions (predict offsets w.r.t prior-boxes and classes in each resulting localization box)
         locs, classes_scores = self.pred_convs(conv4_3_feats, conv7_feats, conv8_2_feats, conv9_2_feats, conv10_2_feats,
                                                conv11_2_feats)  # (N, 8732, 4), (N, 8732, n_classes)
-
         return locs, classes_scores
 
     def create_prior_boxes(self):
@@ -388,13 +394,19 @@ class SSD300(nn.Module):
                       'conv10_2': 0.725,
                       'conv11_2': 0.9}
 
-        aspect_ratios = {'conv4_3': [.15],
-                         'conv7': [.15],
-                         'conv8_2': [.15],
-                         'conv9_2': [.15],
-                         'conv10_2': [.15],
-                         'conv11_2': [.15]}
+        # aspect_ratios = {'conv4_3': [.15],
+        #                  'conv7': [.15],
+        #                  'conv8_2': [.15],
+        #                  'conv9_2': [.15],
+        #                  'conv10_2': [.15],
+        #                  'conv11_2': [.15]}
         # het lijkt er op alsof een kolom ongeveer 7x zo lang is als breed.
+        aspect_ratios = {'conv4_3': [1., 2., 0.5],
+                         'conv7': [1., 2., 3., 0.5, .333],
+                         'conv8_2': [1., 2., 3., 0.5, .333],
+                         'conv9_2': [1., 2., 3., 0.5, .333],
+                         'conv10_2': [1., 2., 0.5],
+                         'conv11_2': [1., 2., 0.5]}
 
         fmaps = list(fmap_dims.keys())
 
@@ -409,15 +421,15 @@ class SSD300(nn.Module):
                     for ratio in aspect_ratios[fmap]:
                         prior_boxes.append([cx, cy, obj_scales[fmap] * sqrt(ratio), obj_scales[fmap] / sqrt(ratio)])
 
-                        # # For an aspect ratio of 1, use an additional prior whose scale is the geometric mean of the
-                        # # scale of the current feature map and the scale of the next feature map
-                        # if ratio == 1.:
-                        #     try:
-                        #         additional_scale = sqrt(obj_scales[fmap] * obj_scales[fmaps[k + 1]])
-                        #     # For the last feature map, there is no "next" feature map
-                        #     except IndexError:
-                        #         additional_scale = 1.
-                        #     prior_boxes.append([cx, cy, additional_scale, additional_scale])
+                        # For an aspect ratio of 1, use an additional prior whose scale is the geometric mean of the
+                        # scale of the current feature map and the scale of the next feature map
+                        if ratio == 1.:
+                            try:
+                                additional_scale = sqrt(obj_scales[fmap] * obj_scales[fmaps[k + 1]])
+                            # For the last feature map, there is no "next" feature map
+                            except IndexError:
+                                additional_scale = 1.
+                            prior_boxes.append([cx, cy, additional_scale, additional_scale])
 
         prior_boxes = torch.FloatTensor(prior_boxes).to(device)  # (8732, 4)
         prior_boxes.clamp_(0, 1)  # (8732, 4)
@@ -567,6 +579,7 @@ class MultiBoxLoss(nn.Module):
         batch_size = predicted_locs.size(0)
         n_priors = self.priors_cxcy.size(0)
         n_classes = predicted_scores.size(2)
+        # print(n_priors, predicted_locs.size(1))
 
         assert n_priors == predicted_locs.size(1) == predicted_scores.size(1)
 
