@@ -42,6 +42,8 @@ def evaluate(checkpoint, run_colab, batch_size, set, subset):
     # Make sure it's in eval mode
     model.eval()
 
+    ####################### wat is dit en waarom bestaat het niet?
+
     # Lists to store detected and true boxes, labels, scores
     det_boxes = list()
     det_labels = list()
