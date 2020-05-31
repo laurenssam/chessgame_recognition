@@ -206,12 +206,12 @@ class PredictionConvolutions(nn.Module):
         self.n_classes = n_classes
 
         # Number of prior-boxes we are considering per position in each feature map
-        n_boxes = {'conv4_3': 4,
-                   'conv7': 6,
-                   'conv8_2': 6,
-                   'conv9_2': 6,
-                   'conv10_2': 4,
-                   'conv11_2': 4}
+        # n_boxes = {'conv4_3': 4,
+        #            'conv7': 6,
+        #            'conv8_2': 6,
+        #            'conv9_2': 6,
+        #            'conv10_2': 4,
+        #            'conv11_2': 4}
 
         # # Number of prior-boxes we are considering per position in each feature map
         # n_boxes = {'conv4_3': 1,
@@ -220,6 +220,13 @@ class PredictionConvolutions(nn.Module):
         #            'conv9_2': 1,
         #            'conv10_2': 1,
         #            'conv11_2': 1}
+
+        n_boxes = {'conv4_3': 1,
+                   'conv7': 2,
+                   'conv8_2': 2,
+                   'conv9_2': 2,
+                   'conv10_2': 2,
+                   'conv11_2': 2}
 
         # Localization prediction convolutions (predict offsets w.r.t prior-boxes)
         self.loc_conv4_3 = nn.Conv2d(512, n_boxes['conv4_3'] * 4, kernel_size=3, padding=1)
@@ -387,12 +394,19 @@ class SSD300(nn.Module):
                      'conv10_2': 3,
                      'conv11_2': 1}
 
-        obj_scales = {'conv4_3': 0.1,
-                      'conv7': 0.2,
-                      'conv8_2': 0.375,
-                      'conv9_2': 0.55,
-                      'conv10_2': 0.725,
-                      'conv11_2': 0.9}
+        # obj_scales = {'conv4_3': 0.1,
+        #               'conv7': 0.2,
+        #               'conv8_2': 0.375,
+        #               'conv9_2': 0.55,
+        #               'conv10_2': 0.725,
+        #               'conv11_2': 0.9}
+                      
+        obj_scales = {'conv4_3': 0.75,
+                      'conv7': 0.75,
+                      'conv8_2': 0.75,
+                      'conv9_2': 0.75,
+                      'conv10_2': 0.85,
+                      'conv11_2': 0.95}
 
         # aspect_ratios = {'conv4_3': [.15],
         #                  'conv7': [.15],
@@ -401,12 +415,19 @@ class SSD300(nn.Module):
         #                  'conv10_2': [.15],
         #                  'conv11_2': [.15]}
         # het lijkt er op alsof een kolom ongeveer 7x zo lang is als breed.
-        aspect_ratios = {'conv4_3': [1., 2., 0.5],
-                         'conv7': [1., 2., 3., 0.5, .333],
-                         'conv8_2': [1., 2., 3., 0.5, .333],
-                         'conv9_2': [1., 2., 3., 0.5, .333],
-                         'conv10_2': [1., 2., 0.5],
-                         'conv11_2': [1., 2., 0.5]}
+        # aspect_ratios = {'conv4_3': [1., 2., 0.5],
+        #                  'conv7': [1., 2., 3., 0.5, .333],
+        #                  'conv8_2': [1., 2., 3., 0.5, .333],
+        #                  'conv9_2': [1., 2., 3., 0.5, .333],
+        #                  'conv10_2': [1., 2., 0.5],
+        #                  'conv11_2': [1., 2., 0.5]}
+
+        aspect_ratios = {'conv4_3': [0.333],
+                         'conv7': [.333, 0.2],
+                         'conv8_2': [.333, 0.2],
+                         'conv9_2': [.333, 0.2],
+                         'conv10_2': [.333, 0.2],
+                         'conv11_2': [.333, 0.2]}
 
         fmaps = list(fmap_dims.keys())
 
