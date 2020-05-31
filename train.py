@@ -74,7 +74,9 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     else:
         # root_path = "/Users/laurenssamson/Documents/Projects/Chess_notation/chess/data/chess_data"
         root_path = "/Users/sierkkanis/Documents/chessrecognition/chessgame_recognition/annotated"
-    train_dataset = ChessDataset(root_path[:1])
+    train_dataset = ChessDataset(root_path)
+    train_dataset.images = train_dataset.images[:1]
+    train_dataset.objects = train_dataset.objects[:1]
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True,
                                                collate_fn=train_dataset.collate_fn, num_workers=workers,
                                                pin_memory=True)  # note that we're passing the collate function here
@@ -84,8 +86,9 @@ def main(batch_size, learning_rate, continue_training, print_freq, run_colab, ex
     # Calculate total number of epochs to train and the epochs to decay learning rate at (i.e. convert iterations to epochs)
     # To convert iterations to epochs, divide iterations by the number of iterations per epoch
     # The paper trains for 120,000 iterations with a batch size of 32, decays after 80,000 and 100,000 iterations
-    epochs = iterations // (len(train_dataset) // 32)
-    decay_lr_at = [it // (len(train_dataset) // 32) for it in decay_lr_at]
+    epochs = 20
+    #epochs = iterations // (len(train_dataset) // 32)
+    #decay_lr_at = [it // (len(train_dataset) // 32) for it in decay_lr_at]
     print(f"Number of training epochs: {epochs}")
 
     # Epochs
